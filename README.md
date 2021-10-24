@@ -1,8 +1,8 @@
-### Intrinsic and Extrinsic Self Calibration of Roadside LiDAR and Camera
+## Intrinsic and Extrinsic Self Calibration of Roadside LiDAR and Camera
 
 #### Method
 
-![fig3](/media/jingxin/Windows-SSD/Users/jingxin/Desktop/fig3.jpg)
+![method](./img/method.jpg)
 
 #### Requirements
 
@@ -118,7 +118,7 @@
 
   After the convergence, you will see the results like this:
 
-  ![image-20211024151254437](/home/jingxin/.config/Typora/typora-user-images/image-20211024151254437.png)
+  ![result](./img/result.png)
 
   The intrinsic and extrinsic results will be printed on the console. And the initial reproject and final reproject will be shown.
 
