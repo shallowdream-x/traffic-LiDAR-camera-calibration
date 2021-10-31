@@ -1,4 +1,4 @@
-image_path: "/home/jingxin/calibration/lidar_camera_calibration/feature/image0/001001.jpg"
+image_path: "/home/jingxin/traffic-LiDAR-camera-calibration/feature/image0/001001.jpg"
 feature_num: 10
 # initial value of intrisic and extrinsic parameters
 # image0
