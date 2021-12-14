@@ -1,4 +1,4 @@
-## Intrinsic and Extrinsic Self Calibration of Roadside LiDAR and Camera
+## Intrinsic and Extrinsic Calibration of Roadside LiDAR and Camera
 
 #### Method
 
@@ -14,85 +14,18 @@
 
 #### Usage
 
-- Extract features
+- We provide tests in real world traffic scenes. There are two examples in real world traffic scenes in feature folder. The feature/feature folder stores the selected 2d features. The feature/feature_bit is the bit image for distance transform(This is auto generated). The feature/3d_feature folder stores the selected 3d features.
 
-  - set image path:
+- If you want to extract features by hand, refer to doc/extract_feature.md
 
-    modify the image_path paramter in config/param.yaml like:
-
-    ```
-    image_path:"/home/jingxin/calibration/lidar_camera_calibration/feature/image0/001001.jpg"
-    ```
-
-  - 2d features:
-
-    ```bash
-    python src/extract_feature.py
-    ```
-
-    When you run this program, the image will appear in a window. The windows may be small at first, you can adjust it by dragging it. Then you can extract 2d features by doing the following operations:
-
-    ```
-    left click: select/add a point
-    mid click: delete a point
-    right click: form a feature out of the previously selected points
-    ```
-
-    After right click, the 2d feature will be saved in the image_path folder.
-
-    We always select line features and regions features. For line features, they are always formed by two points. For region features, they can be formed by many points, but since the opencv limitation, you have to select the points in clockwise or counterclockwise order, otherwise they can not form a closed region feature.
-
-  - set feature num:
-
-    modify the feature_num paramter in config/param.yaml like:
-
-    ```
-    feature_num: 10
-    ```
-
-  - 3d features:
-
-    The demo map can be obtained by the link following:
-
-     https://pan.baidu.com/s/1TsBk4bmP8vH122Mw0fKp0A code: j6ue 
-    
-    We use the CloudCompare software to crop corresponding 3d features from map point cloud. The software is installed in windows. The saved result from the software is always txt format. So we can use the program to transform them to pcd format:
-
-    ```
-    python txt2pcd.py
-    ```
-
-    Finally, the 3d_feature folder will have pcd files whose number is feature_num.
-    
-    After feature extraction, the folder will be like this:
-    
-    ```
-    └── traffic-LiDAR-camera_calibration
-           └── feature    
-                  └── image0  <-- your camera folder
-                         ├── 3d_features       <-- 3d features
-                         		├── feature1.pcd
-                         		├── feature1.txt 
-                         		...
-                         		├── feature10.pcd
-                         		├── feature10.txt
-                         ├── feature           <-- 2d features
-                         		├── feature1.jpg
-                         		...
-                         		├── feature10.jpg
-                         ├── feature_bit       <-- 2d bit featuress
-                         		├── feature1.jpg
-                         		...
-                         		├── feature10.jpg
-                         |── 001001.jpg        <-- your image file
-    ```
-
-- Run optimization
+- Run the example
 
   - modify the initial intrinsic and extrinsic paramter in config/param.yaml like:
 
     ```
     # image0
+    image_path: "/home/jingxin/traffic-LiDAR-camera-calibration/feature/image2/image2.jpg"
+    feature_num: 15
     fx: 2000
     fy: 2000
     cx: 960
@@ -104,7 +37,7 @@
     ```
 
   - build and run main.cpp
-
+  
     ```
     cd traffic-LiDAR-camera_calibration
     mkdir build
@@ -113,16 +46,31 @@
     make
     ./main
     ```
-
+  
 - Results:
 
   After the convergence, you will see the results like this:
 
-  ![result](./img/result.png)
+  ![image-20211214164722996](./img/result.png)
 
-  The intrinsic and extrinsic results will be printed on the console. And the initial reproject and final reproject will be shown.
+  The intrinsic and extrinsic results will be printed on the console. And the initial reproject and final reproject will be shown like this.
+  
+  initial:
+  
+  ![initial](./img/initial.jpg)
+  
+  final:
+  
+  ![final](./img/final.jpg)
+
+#### Demo Gif
+
+![final](./img/colorpc.gif)
+
+![final](./img/feature.gif)
 
 #### TODO
 
-- [ ] rough calibration
-- [ ] demo video
+- [ ] rough calibration(coming soon)
+- [ ] simulation code(coming soon)
+

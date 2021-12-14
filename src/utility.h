@@ -64,10 +64,10 @@ void get_distance_transform(const cv::Mat &input, Eigen::MatrixXf &out_distance_
     // cv::normalize(distmap, distmap, 0, 1., cv::NORM_MINMAX);
     // distmap = distmap * 255;
     cv::cv2eigen(distmap, out_distance_transform_map);
-    // cv::filter2D(distmap, distgradx, CV_32F, kernX);
+    //cv::filter2D(distmap, distgradx, CV_32F, kernX);
     cv::Sobel(distmap, distgradx, CV_32F, 1, 0, 1);
     cv::cv2eigen(distgradx, out_distance_transform_gradx);
-    // cv::filter2D(distmap, distgrady, CV_32F, kernY);
+    //cv::filter2D(distmap, distgrady, CV_32F, kernY);
     cv::Sobel(distmap, distgrady, CV_32F, 0, 1, 1);
     cv::cv2eigen(distgrady, out_distance_transform_grady);
 }
@@ -87,7 +87,7 @@ void reproject(const Eigen::MatrixXd &a_X, const Eigen::Matrix4d &b_T_a, const E
     b_u = K * unvn;
 }
 
-void s_overlay(cv::Mat &im, const Eigen::MatrixXd &uv)
+void s_overlay(cv::Mat &im, const Eigen::MatrixXd &uv, int width, int height)
 {
     assert(uv.rows() == 3);
     assert(im.rows > 0 && im.cols > 0 && im.channels() == 3);
@@ -95,7 +95,7 @@ void s_overlay(cv::Mat &im, const Eigen::MatrixXd &uv)
     for (int i = 0; i < uv.cols(); i++)
     {
         cv::Vec3b color = cv::Vec3d(0, 0, 255);
-        if (uv(1, i) > 1 && uv(1, i) < 1080 && uv(0, i) > 1 && uv(0, i) < 1920)
+        if (uv(1, i) > 1 && uv(1, i) < height && uv(0, i) > 1 && uv(0, i) < width)
             im.at<cv::Vec3b>(uv(1, i), uv(0, i)) = color;
     }
 }

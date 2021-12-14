@@ -28,8 +28,8 @@ public:
         // cout << "num_residuals_ is " << num_residuals() << "\n";
         double fx = parameters[0][0];
         double fy = parameters[0][1];
-        double cx = 960.0;
-        double cy = 540.0;
+        double cx = width / 2;
+        double cy = height / 2;
         Eigen::Vector3d t(parameters[0][2], parameters[0][3], parameters[0][4]);
         Eigen::Quaterniond q(parameters[0][8], parameters[0][5], parameters[0][6], parameters[0][7]);
         Eigen::Matrix3d R = q.toRotationMatrix();
@@ -66,7 +66,7 @@ public:
         }
         else {
             // cout << "********************in!******************" << "\n";
-            // cout << "u: " << u_ << "v: " << v_ << "\n";
+            cout << "u: " << u_ << "v: " << v_ << "\n";
             residuals[0] = (double)getInterpolatedElementEigen(cost, u_, v_) ;
         }
         //cout << "residuals[0] cost = " << residuals[0] << endl;

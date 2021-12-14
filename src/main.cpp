@@ -74,17 +74,22 @@ int main(int argc, char **argv)
         get_distance_transform(img, feature_distmap[i], feature_distgradx[i], feature_distgrady[i]);
     }
 
+    int width = ori_img.cols;
+    int height = ori_img.rows;
+    cout << width << " " << height << "\n";
+
     // initial reproject
     Eigen::MatrixXd feature_init_uv[feature_num];
     cv::Mat init_image_repro = ori_img.clone();
     for (int i = 0; i < feature_num; ++i)
     {
         reproject(feature_3d_points[i], extrinsic, K, feature_init_uv[i]);
-        s_overlay(init_image_repro, feature_init_uv[i]);
+        s_overlay(init_image_repro, feature_init_uv[i], width, height);
     }
     cv::namedWindow("initial", 0);
     cv::resizeWindow("initial", 960, 540);
     cv::imshow("initial", init_image_repro);
+    cv::imwrite("initial.jpg", init_image_repro);
 
     //optimization
     ceres::Problem problem;
@@ -92,9 +97,6 @@ int main(int argc, char **argv)
     ceres::LocalParameterization *local_parameterization = new PoseLocalParameterization();
     problem.AddParameterBlock(pose, 9, local_parameterization);
 
-    int width = ori_img.rows;
-    int height = ori_img.cols;
-    cout << width << " " << height << "\n";
     for (int i = 0; i < feature_num; i++)
     {
         for (int j = 0; j < feature_3d_points[i].cols(); j += 10)
@@ -147,10 +149,11 @@ int main(int argc, char **argv)
     for (int i = 0; i < feature_num; ++i)
     {
         reproject(feature_3d_points[i], dstT, K, feature_final_uv[i]);
-        s_overlay(final_image_repro, feature_final_uv[i]);
+        s_overlay(final_image_repro, feature_final_uv[i], width, height);
     }
     cv::namedWindow("final", 0);
     cv::resizeWindow("final", 960, 540);
     cv::imshow("final", final_image_repro);
-    cv::waitKey(0);
+    cv::imwrite("final.jpg", final_image_repro);
+    cv::waitKey();
 }
